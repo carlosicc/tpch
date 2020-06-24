@@ -24,9 +24,8 @@ sudo -u ec2-user make
 #    Note: Pending to Remove hard-coded volume name (e.g. nvme1n1). 
 sudo mkfs -t ext4 -q /dev/nvme1n1
 
-# Adding temporary sleep + dummy dbgen, due possible bug: https://bugzilla.redhat.com/show_bug.cgi?id=501026.
-# More details to be added.
-sudo sleep 180
+# Adding temporary sleep, due mkfs backg processes
+sudo sleep 10
 
 # Mounting new fs
 sudo mkdir /tpch_benchmark
@@ -40,10 +39,10 @@ export SCALING_FACTOR=${1}
 export DSS_PATH=/tpch_benchmark/data
 cd /home/ec2-user/tpch_benchmark/src/bootstrap/tpch_2.18.0_rc2/dbgen
 
-# Adding temporary sleep + dummy dbgen, due possible bug: https://bugzilla.redhat.com/show_bug.cgi?id=501026.
+# Adding dummy dbgen, due possible bug: https://bugzilla.redhat.com/show_bug.cgi?id=501026.
 # More details to be added.
-./dbgen -v -C 1 -s 1 -S 1
-sudo rm -rf /tpch_benchmark/data/
+yes 'no' | ./dbgen -v -C 1 -s 0.1
+sudo rm -f /tpch_benchmark/data/*
 for (( c=1; c<=$DoP; c++ )); do yes 'no' | ./dbgen -v -C $DoP -s $SCALING_FACTOR -S $c & done
 
 # Wait for DBGen to finish
