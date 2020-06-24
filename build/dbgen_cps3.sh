@@ -24,8 +24,9 @@ sudo -u ec2-user make
 #    Note: Pending to Remove hard-coded volume name (e.g. nvme1n1). 
 sudo mkfs -t ext4 -q /dev/nvme1n1
 
-# Adding sleep, since mkfs can take a few seconds to execute
-sudo sleep 15
+# Adding sleep, due possible bug: https://bugzilla.redhat.com/show_bug.cgi?id=501026.
+# More details to be added.
+sudo sleep 180
 
 # Mounting new fs
 sudo mkdir /tpch_benchmark
