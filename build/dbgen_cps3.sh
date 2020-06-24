@@ -35,7 +35,7 @@ sudo chown ec2-user:ec2-user -R /tpch_benchmark/data
 
 # Generating TPC-H Data -- Temporal hard-coding values for testing:           
 export DoP=10
-export SCALING_FACTOR=${ScalingFactor}        
+export SCALING_FACTOR=${1}        
 export DSS_PATH=/tpch_benchmark/data
 cd /home/ec2-user/tpch_benchmark/src/bootstrap/tpch_2.18.0_rc2/dbgen
 for (( c=1; c<=$DoP; c++ )); do yes 'no' | ./dbgen -v -C $DoP -s $SCALING_FACTOR -S $c & done
