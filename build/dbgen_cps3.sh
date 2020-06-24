@@ -42,7 +42,7 @@ cd /home/ec2-user/tpch_benchmark/src/bootstrap/tpch_2.18.0_rc2/dbgen
 
 # Adding temporary sleep + dummy dbgen, due possible bug: https://bugzilla.redhat.com/show_bug.cgi?id=501026.
 # More details to be added.
-for (( c=1; c<=$DoP; c++ )); do yes 'no' | ./dbgen -v -C 1 -s 1 -S $c & done
+./dbgen -v -C 1 -s 1 -S 1
 sudo rm -rf /tpch_benchmark/data/
 for (( c=1; c<=$DoP; c++ )); do yes 'no' | ./dbgen -v -C $DoP -s $SCALING_FACTOR -S $c & done
 
