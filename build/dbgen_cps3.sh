@@ -23,6 +23,11 @@ sudo -u ec2-user make
 # Mounting EBS Volume            
 #    Note: Pending to Remove hard-coded volume name (e.g. nvme1n1). 
 sudo mkfs -t ext4 -q /dev/nvme1n1
+
+# Adding sleep, since mkfs can take a few seconds to execute
+sudo sleep 15
+
+# Mounting new fs
 sudo mkdir /tpch_benchmark
 sudo mount /dev/nvme1n1 /tpch_benchmark
 mkdir -p /tpch_benchmark/data
