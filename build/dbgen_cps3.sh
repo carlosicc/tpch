@@ -30,7 +30,7 @@ sudo sleep 15
 # Mounting new fs
 sudo mkdir /tpch_benchmark
 sudo mount /dev/nvme1n1 /tpch_benchmark
-mkdir -p /tpch_benchmark/data
+sudo mkdir -p /tpch_benchmark/data
 sudo chown ec2-user:ec2-user -R /tpch_benchmark/data
 
 # Generating TPC-H Data -- Temporal hard-coding values for testing:           
