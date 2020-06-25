@@ -24,9 +24,6 @@ sudo -u ec2-user make
 #    Note: Pending to Remove hard-coded volume name (e.g. nvme1n1). 
 sudo mkfs -t ext4 -q /dev/nvme1n1
 
-# Adding temporary sleep, due mkfs backg processes
-sudo sleep 10
-
 # Mounting new fs
 sudo mkdir /tpch_benchmark
 sudo mount /dev/nvme1n1 /tpch_benchmark
@@ -38,16 +35,11 @@ export DoP=32
 export SCALING_FACTOR=${1}        
 export DSS_PATH=/tpch_benchmark/data
 cd /home/ec2-user/tpch_benchmark/src/bootstrap/tpch_2.18.0_rc2/dbgen
-
-# Adding dummy dbgen, due possible bug: https://bugzilla.redhat.com/show_bug.cgi?id=501026.
-# More details to be added.
-yes 'no' | ./dbgen -v -C 1 -s 0.1
-sudo rm -f /tpch_benchmark/data/*
 for (( c=1; c<=$DoP; c++ )); do yes 'no' | ./dbgen -v -C $DoP -s $SCALING_FACTOR -S $c & done
 
 # Wait for DBGen to finish
 export PROC=1
-while [ $PROC -gt 0 ]; do sleep 5; PROC=`pgrep -x "dbgen" | wc -l`; echo "DBGen Processes still running: $PROC"; done
+while [ $PROC -gt 0 ]; do sleep 10; PROC=`pgrep -x "dbgen" | wc -l`; echo "DBGen Processes still running: $PROC"; done
 sudo chown ec2-user:ec2-user -R /tpch_benchmark/data
 
 # Moving data files to correct directories
